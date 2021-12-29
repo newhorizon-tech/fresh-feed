@@ -1,10 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
 
-function App() {
+const App = () => {
+  const list = ["One", 'Two', 'Three']
   return (
     <div className="App">
       <h1>Fresh Feed</h1>
+      <ul id="main-feed">
+         {list.map(item => <li className="feed-items"> {item} </li>)}
+       </ul>
     </div>
   );
 }

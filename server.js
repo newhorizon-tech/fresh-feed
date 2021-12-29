@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const app = express();
 
 
@@ -9,6 +10,8 @@ app.get('/user/:user', (req, res) => {
 })
 
 app.get('/test/', (req, res) => res.send('Node.js/Express works!'))
+
+app.use(express.static('build'))
 
 
 app.listen(8080)
