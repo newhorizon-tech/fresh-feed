@@ -33,6 +33,8 @@ body {
 }
 
 #main-feed li {
+  display: flex;
+  justify-content: center;
   background-color: var(--bright-red);
   margin: 15px 0;
   padding: 15px;

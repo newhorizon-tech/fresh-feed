@@ -7,7 +7,7 @@ const twitterUrl = 'https://twitter.com/';
 
 const scrape = async (username, twitterUrl) => {
   let tweets = []
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   page.goto(`${twitterUrl}${username}?lang=en`);
   await page.waitForXPath(
@@ -19,19 +19,21 @@ const scrape = async (username, twitterUrl) => {
     const timeline = document.querySelector("section div");
     const content = timeline.querySelectorAll("article div[lang][dir]");
     console.log(content)
-    return Array.from(content, e => e.textContent)
+    return Array.from(content, e => e.textContent.trim())
   },);
-  console.log(tweets)
   return tweets
 };
 
 app.get('/user/:user', async (req, res) => {
   const username = req.params.user;
   const tweets = await scrape(username, twitterUrl);
+  res.set({
+       "Content-Type": "application/json",
+       "Access-Control-Allow-Origin": "*",
+   });
+
   res.json(tweets);
 });
-
-app.get('/test/', (req, res) => res.send('Node.js/Express works!'));
 
 app.use(express.static('build'));
 

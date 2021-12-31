@@ -2,11 +2,10 @@ const FeedDisplay = (props) => {
   const {list} = props;
   return(
     <ul id="main-feed">
-      {list.map((item) => (
-        <li key={list.indexOf(item)} className="feed-items">
-          {' '}
-          {item}
-          {' '}
+      {
+       Object.keys(list).map(key => (
+        <li key={key} className="feed-items">
+          {list[key]}
         </li>
       ))}
     </ul>
