@@ -1,0 +1,40 @@
+:root {
+  --blue-green: #85cdca;
+  --cool-green: #5cdb95;
+  --bright-red: #fc4445;
+  --dark-blue: #05396b;
+  --white: #edf5e0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html{
+  height: 100%;
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--cool-green);
+  color: var(--white);
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#main-feed {
+  margin-top: 5%;
+  list-style-type: none;
+}
+
+#main-feed li {
+  background-color: var(--bright-red);
+  margin: 15px 0;
+  padding: 15px;
+  font-size: 110%;
+}
