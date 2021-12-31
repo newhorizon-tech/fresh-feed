@@ -3,7 +3,13 @@ const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
 
+const twitterUrl = 'https://twitter.com/';
 
+const scrape = async (username, twitterUrl) => {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  page.goto(`${twitterUrl}${username}`);
+};
 
 app.get('/user/:user', async (req, res) => {
   const username = req.params.user;
