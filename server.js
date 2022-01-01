@@ -26,13 +26,21 @@ const scrape = async (username, twitterUrl) => {
 
 app.get('/user/:user', async (req, res) => {
   const username = req.params.user;
-  const tweets = await scrape(username, twitterUrl);
+  let tweets = await scrape(username, twitterUrl);
+  let tweetsObj = {}
+  tweets.forEach((x,i) => {
+    console.log(i);
+    console.log(JSON.stringify(x));
+    tweetsObj[i] = {id:i, content: x}
+    console.log('---------------------------');
+  })
+  console.log(tweetsObj)
   res.set({
        "Content-Type": "application/json",
        "Access-Control-Allow-Origin": "*",
    });
 
-  res.json(tweets);
+  res.json(tweetsObj);
 });
 
 app.use(express.static('build'));
