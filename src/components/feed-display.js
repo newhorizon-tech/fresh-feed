@@ -3,9 +3,9 @@ const FeedDisplay = (props) => {
   return(
     <ul id="main-feed">
       {
-       Object.keys(list).map(key => (
-        <li key={key} className="feed-items">
-          {list[key]}
+       Object.values(list).map(item => (
+        <li key={item.id} className="feed-items">
+          {item.content}
         </li>
       ))}
     </ul>
