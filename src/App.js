@@ -1,31 +1,23 @@
+import { useState } from 'react';
 import FeedDisplay from './components/feed-display';
-import {useEffect,useState} from 'react';
+import FeedInput from './components/feed-input';
 
 import './App.css';
 
 const App = () => {
-  const initialState = {
-                        "0": {id: 0, content: "Tweet One\nSomething else."},
-                        "1": {id: 1, content: "Tweet Two"}
-                      };
-  const [feed, setFeed] = useState(initialState);
-  console.log(feed);
+  const [feed, setFeed] = useState({});
 
-  const fetchData = async () => {
-      const response = await fetch("http://localhost:8080/user/github");
-      return response.json();
-  }
-
-  const handleData = async () => {
-      let newFeed = await fetchData();
-      setFeed(newFeed);
-  }
+  const handleData = async (username) => {
+    const response = await fetch(`http://localhost:8080/user/${username}`);
+    const newFeed = await response.json();
+    setFeed(newFeed);
+  };
 
   return (
     <div className="App">
       <h1>Fresh Feed</h1>
-      <button onClick={() => handleData()}> Fetch Data </button>
-      <FeedDisplay list={feed}/>
+      <FeedInput handleData={handleData} />
+      <FeedDisplay list={feed} />
     </div>
   );
 };
