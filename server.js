@@ -3,7 +3,10 @@ const express = require('express');
 const app = express();
 const puppeteer = require('puppeteer');
 
-const twitterUrl = 'https://twitter.com/';
+const twitterUrl = (user) => `https://twitter.com/${user}?lang=en`;
+
+const twitterSearchURL = (user) => `https://twitter.com/search?q=from%3A${user}` +
+                                  `%20exclude%3Areplies&f=live`;
 
 const mergeArrayIntoSet = (arr, set) => {
   arr.forEach((e) => set.add(e));
@@ -24,7 +27,8 @@ const getTweets = async (page) => {
 const scrape = async (username, twitterUrl, puppeteer) => {
   const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
-  page.goto(`${twitterUrl}${username}?lang=en`);
+  page.goto(twitterUrl(username));
+
   await page.waitForXPath(
     "//div[contains(@aria-label,'Timeline')]",
   );
@@ -33,13 +37,14 @@ const scrape = async (username, twitterUrl, puppeteer) => {
 
   const tweetSet = new Set([]);
 
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < 15; i += 1) {
     const tweetsText = await getTweets(page);
-    await page.waitForTimeout(200);
+    await page.waitForTimeout(300);
     const tweetsBefore = tweetSet.size;
     mergeArrayIntoSet(tweetsText, tweetSet);
     const tweetsAfter = tweetSet.size;
-    console.log({ tweetsBefore, tweetsAfter });
+    const tweetsFetchedInOneScroll = tweetsAfter - tweetsBefore;
+    console.log({tweetsFetchedInOneScroll, tweetsBefore, tweetsAfter });
   }
 
   return tweetSet;
@@ -50,8 +55,6 @@ app.get('/user/:user', async (req, res) => {
   const tweets = await scrape(username, twitterUrl, puppeteer);
   const tweetsObj = {};
   tweets.forEach((x, i) => {
-    console.log(i);
-    console.log(JSON.stringify(x));
     tweetsObj[i] = {
       id: i,
       content: x,
