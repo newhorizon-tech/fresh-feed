@@ -59,7 +59,6 @@ app.get('/user/:user', async (req, res) => {
       id: i,
       content: x,
     };
-    console.log('---------------------------');
   });
   res.set({
     'Content-Type': 'application/json',
